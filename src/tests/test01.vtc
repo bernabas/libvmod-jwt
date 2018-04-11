@@ -1,0 +1,36 @@
+varnishtest "Test jwt vmod"
+
+server s1 {
+       rxreq
+       txresp
+} -start
+
+varnish v1 -vcl+backend {
+	import std;
+	import ${vmod_jwt};
+
+	sub vcl_init {
+		std.log(jwt.info());
+	}
+
+	sub vcl_deliver {
+		set resp.http.hello = jwt.hello("World");
+		set resp.http.info = jwt.info();
+	}
+} -start
+
+logexpect l1 -v v1 -g raw -d 1 {
+	expect 0 0    CLI     {^Rd vcl.load}
+	expect 0 =    VCL_Log {^vmod_jwt loaded at }
+} -start
+
+client c1 {
+	txreq -url "/"
+	rxresp
+	expect resp.http.hello == "Hello, World"
+	expect resp.http.info  ~  "^vmod_jwt warmed at "
+}
+
+client c1 -run
+
+logexpect l1 -wait

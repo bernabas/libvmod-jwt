@@ -1,0 +1,3 @@
+/Users/bernabasdagnachew/c/libvmod-jwt/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/bernabasdagnachew/c/libvmod-jwt/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/bernabasdagnachew/c/libvmod-jwt/cmake-build-debug/CMakeFiles/libvmod_jwt.dir
